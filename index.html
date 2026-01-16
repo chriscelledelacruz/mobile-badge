@@ -1,0 +1,357 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mayo Clinic - Digital ID</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Load libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .mayo-blue {
+            background-color: #124386;
+        }
+        .mayo-text {
+            color: #124386;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        /* Animation for modal */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 300ms, transform 300ms;
+        }
+        .shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        .qr-gradient {
+            background: linear-gradient(135deg, #124386 0%, #1e60b8 100%);
+        }
+    </style>
+</head>
+<body class="h-screen flex items-center justify-center p-4">
+
+    <!-- Main Container (Mobile Frame) -->
+    <div class="relative w-full max-w-sm bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 flex flex-col h-[800px] max-h-[90vh]">
+        
+        <!-- Header / Branding -->
+        <div class="mayo-blue p-6 pb-12 relative z-0">
+            <div class="flex justify-between items-start relative z-10">
+                <!-- Mayo Logo SVG placeholder -->
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-white/20 backdrop-blur rounded flex items-center justify-center">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-white font-bold text-lg leading-tight tracking-wide">MAYO CLINIC</h1>
+                        <p class="text-blue-200 text-xs font-medium tracking-wider">DIGITAL ID SYSTEM</p>
+                    </div>
+                </div>
+                <!-- Connection Status -->
+                <div class="flex items-center gap-1 bg-blue-800/50 px-2 py-1 rounded-full border border-blue-400/30">
+                    <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                    <span class="text-[10px] text-blue-100 font-medium">SECURE</span>
+                </div>
+            </div>
+
+            <!-- Pattern Overlay -->
+            <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] z-0"></div>
+        </div>
+
+        <!-- ID Card Content -->
+        <div class="flex-1 bg-gray-50 relative flex flex-col items-center pt-0 px-6 z-10">
+            
+            <!-- Avatar (Overlapping Header) -->
+            <div class="relative -mt-10 mb-4">
+                <div class="w-28 h-28 rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-200 relative">
+                    <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=400&auto=format&fit=crop" alt="Victoria Jones" class="w-full h-full object-cover">
+                </div>
+                <div class="absolute bottom-1 right-1 bg-blue-600 text-white p-1.5 rounded-full border-2 border-white shadow-sm" title="Verified">
+                    <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                </div>
+            </div>
+
+            <!-- User Details -->
+            <div class="text-center w-full mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">Victoria Jones, MD</h2>
+                <p class="text-blue-700 font-semibold mb-1">Physician</p>
+                <p class="text-gray-500 text-sm">Cardiology Department</p>
+                
+                <div class="mt-4 flex justify-center gap-2 text-xs text-gray-500">
+                    <span class="bg-gray-200 px-3 py-1 rounded-full">ID: #8842-1920</span>
+                    <span class="bg-green-100 text-green-700 border border-green-200 px-3 py-1 rounded-full">Active</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Barcode Strip -->
+            <div class="w-full h-12 bg-white border border-gray-200 rounded-lg mb-6 flex items-center justify-between px-4 shadow-sm opacity-80">
+                <div class="flex gap-0.5 h-6 items-center opacity-60">
+                    <!-- Simulated Barcode Lines -->
+                    <div class="w-1 h-full bg-black"></div><div class="w-0.5 h-full bg-black"></div><div class="w-2 h-full bg-black"></div><div class="w-0.5 h-full bg-black"></div>
+                    <div class="w-1 h-full bg-black"></div><div class="w-3 h-full bg-black"></div><div class="w-0.5 h-full bg-black"></div><div class="w-1 h-full bg-black"></div>
+                    <div class="w-2 h-full bg-black"></div><div class="w-1 h-full bg-black"></div><div class="w-0.5 h-full bg-black"></div><div class="w-2 h-full bg-black"></div>
+                </div>
+                <span class="font-mono text-[10px] text-gray-400">EXP: 12/28</span>
+            </div>
+
+            <!-- Action Area -->
+            <div class="mt-auto w-full pb-8">
+                <button type="button" onclick="openAuthModal()" class="w-full mayo-blue hover:bg-blue-800 text-white font-medium py-4 px-6 rounded-xl shadow-lg shadow-blue-900/20 transition-all active:scale-95 flex items-center justify-center gap-2 group cursor-pointer relative z-20">
+                    <i data-lucide="qr-code" class="w-5 h-5 group-hover:rotate-90 transition-transform"></i>
+                    <span>Access Digital Credential</span>
+                </button>
+                <p class="text-center text-[10px] text-gray-400 mt-4 flex items-center justify-center gap-1">
+                    <i data-lucide="shield-check" class="w-3 h-3"></i>
+                    Secured by Mayo Clinic Identity & Access Management
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Authentication Modal Overlay -->
+    <div id="authModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center opacity-0 transition-opacity duration-300">
+        <div class="bg-white w-[90%] max-w-[320px] rounded-2xl p-6 shadow-2xl transform scale-95 transition-transform duration-300" id="modalContent">
+            
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-3 text-blue-900">
+                    <i data-lucide="lock" class="w-6 h-6"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900">Security Check</h3>
+                <p class="text-xs text-gray-500 mt-1">Please enter your 4-digit PIN to access your QR credential.</p>
+            </div>
+
+            <!-- PIN Input -->
+            <div class="flex justify-center gap-3 mb-6" id="pinContainer">
+                <input type="password" maxlength="1" inputmode="numeric" class="pin-input w-12 h-14 border-2 border-gray-200 rounded-lg text-center text-2xl font-bold focus:border-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-50 transition-all text-gray-800" autofocus>
+                <input type="password" maxlength="1" inputmode="numeric" class="pin-input w-12 h-14 border-2 border-gray-200 rounded-lg text-center text-2xl font-bold focus:border-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-50 transition-all text-gray-800">
+                <input type="password" maxlength="1" inputmode="numeric" class="pin-input w-12 h-14 border-2 border-gray-200 rounded-lg text-center text-2xl font-bold focus:border-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-50 transition-all text-gray-800">
+                <input type="password" maxlength="1" inputmode="numeric" class="pin-input w-12 h-14 border-2 border-gray-200 rounded-lg text-center text-2xl font-bold focus:border-blue-900 focus:outline-none focus:ring-4 focus:ring-blue-50 transition-all text-gray-800">
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="closeModal()" class="flex-1 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-medium text-sm transition-colors cursor-pointer">Cancel</button>
+                <button onclick="verifyPin()" class="flex-1 py-3 mayo-blue hover:bg-blue-800 text-white rounded-xl font-medium text-sm shadow-md transition-colors cursor-pointer">Verify</button>
+            </div>
+            
+            <p class="text-center mt-4 text-[10px] text-gray-400">Hint: Enter 1914</p>
+        </div>
+    </div>
+
+    <!-- QR Code Reveal Modal -->
+    <div id="qrModal" class="fixed inset-0 bg-blue-900/90 backdrop-blur-md z-50 hidden flex items-center justify-center">
+        <div class="bg-white w-[85%] max-w-[320px] rounded-3xl p-8 shadow-2xl relative text-center">
+            <button onclick="closeQrModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            
+            <div class="mb-4">
+                <h3 class="font-bold text-xl text-gray-900">Identity Verified</h3>
+                <p class="text-xs text-green-600 font-medium mt-1 flex justify-center items-center gap-1">
+                    <i data-lucide="check-circle" class="w-3 h-3"></i> Access Granted
+                </p>
+            </div>
+
+            <div class="border-4 border-blue-900/10 p-4 rounded-xl inline-block bg-white shadow-inner mb-4">
+                <div id="qrcode" class="opacity-90"></div>
+            </div>
+
+            <p class="text-xs text-gray-500">Scan this code at the terminal to access restricted areas.</p>
+            
+            <button onclick="closeQrModal()" class="mt-5 w-full py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-medium text-sm transition-colors cursor-pointer border border-gray-200">
+                Exit
+            </button>
+            
+            <div class="mt-6 pt-4 border-t border-gray-100 w-full flex justify-between items-center text-xs text-gray-400">
+                <span>Ref: 8842-1920</span>
+                <span id="timer">60s</span>
+            </div>
+            
+            <!-- Moving gradient bar to show "active" state -->
+            <div class="absolute bottom-0 left-0 w-full h-1.5 bg-gray-100 overflow-hidden rounded-b-3xl">
+                <div class="h-full bg-blue-600 w-full origin-left animate-[shrink_60s_linear_forwards]"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables to ensure accessibility
+        let authModal, modalContent, qrModal, pinInputs, qrcodeDiv;
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Safe Lucide initialization
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                try {
+                    lucide.createIcons();
+                } catch (e) {
+                    console.log('Icon load error:', e);
+                }
+            }
+
+            // Assign DOM Elements inside listener
+            authModal = document.getElementById('authModal');
+            modalContent = document.getElementById('modalContent');
+            qrModal = document.getElementById('qrModal');
+            pinInputs = document.querySelectorAll('.pin-input');
+            qrcodeDiv = document.getElementById('qrcode');
+
+            // Setup Event Listeners for inputs
+            if (pinInputs) {
+                pinInputs.forEach((input, index) => {
+                    input.addEventListener('input', (e) => {
+                        if (e.target.value.length === 1) {
+                            if (index < pinInputs.length - 1) {
+                                pinInputs[index + 1].focus();
+                            } else {
+                                // Auto-submit on last digit
+                                verifyPin();
+                            }
+                        }
+                    });
+
+                    input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                            pinInputs[index - 1].focus();
+                        }
+                    });
+                });
+            }
+
+            // Close modal on outside click
+            if (authModal) {
+                authModal.addEventListener('click', (e) => {
+                    if (e.target === authModal) closeModal();
+                });
+            }
+        });
+
+        // Functions exposed globally
+        function openAuthModal() {
+            if (!authModal) {
+                // Fallback re-query if initialization failed
+                authModal = document.getElementById('authModal');
+                modalContent = document.getElementById('modalContent');
+                pinInputs = document.querySelectorAll('.pin-input');
+            }
+            
+            if (authModal) {
+                authModal.classList.remove('hidden');
+                setTimeout(() => {
+                    authModal.classList.remove('opacity-0');
+                    if(modalContent) {
+                        modalContent.classList.remove('scale-95');
+                        modalContent.classList.add('scale-100');
+                    }
+                    if(pinInputs && pinInputs[0]) pinInputs[0].focus();
+                }, 10);
+                resetInputs();
+            }
+        }
+
+        function closeModal() {
+            if (!authModal) return;
+            
+            authModal.classList.add('opacity-0');
+            if(modalContent) {
+                modalContent.classList.remove('scale-100');
+                modalContent.classList.add('scale-95');
+            }
+            setTimeout(() => {
+                authModal.classList.add('hidden');
+            }, 300);
+        }
+
+        function closeQrModal() {
+            if (qrModal) qrModal.classList.add('hidden');
+        }
+
+        function verifyPin() {
+            const pin = Array.from(pinInputs).map(input => input.value).join('');
+            
+            if (pin === '1914') {
+                closeModal();
+                showQrCode();
+            } else {
+                if(modalContent) modalContent.classList.add('shake');
+                pinInputs.forEach(input => {
+                    input.classList.add('border-red-500', 'bg-red-50');
+                    input.value = '';
+                });
+                if(pinInputs[0]) pinInputs[0].focus();
+                
+                setTimeout(() => {
+                    if(modalContent) modalContent.classList.remove('shake');
+                    pinInputs.forEach(input => {
+                        input.classList.remove('border-red-500', 'bg-red-50');
+                    });
+                }, 500);
+            }
+        }
+
+        function resetInputs() {
+            if(pinInputs) pinInputs.forEach(input => input.value = '');
+        }
+
+        function showQrCode() {
+            if (!qrModal) qrModal = document.getElementById('qrModal');
+            if (!qrcodeDiv) qrcodeDiv = document.getElementById('qrcode');
+
+            qrModal.classList.remove('hidden');
+            
+            // Clear previous QR code
+            qrcodeDiv.innerHTML = '';
+            
+            // Check if QRCode library exists
+            if (typeof QRCode !== 'undefined') {
+                const data = JSON.stringify({
+                    id: "8842-1920",
+                    name: "Victoria Jones",
+                    role: "MD",
+                    access_level: "Level 4",
+                    timestamp: Date.now()
+                });
+
+                new QRCode(qrcodeDiv, {
+                    text: data,
+                    width: 160,
+                    height: 160,
+                    colorDark : "#124386",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+            } else {
+                qrcodeDiv.innerHTML = '<p class="text-sm text-red-500">QR Library Error</p>';
+            }
+        }
+    </script>
+
+    <style>
+        @keyframes shrink {
+            from { transform: scaleX(1); }
+            to { transform: scaleX(0); }
+        }
+    </style>
+</body>
+</html>
